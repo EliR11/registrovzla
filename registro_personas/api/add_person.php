@@ -1,6 +1,9 @@
 <?php
 require_once 'config.php';
 
+// Inicializar la base de datos si es necesario
+initDatabase();
+
 $conn = getConnection();
 
 // Obtener datos del POST
@@ -45,18 +48,15 @@ if (!empty($data['telefono']) && !validatePhone($data['telefono'])) {
 
 // Verificar cédula duplicada
 $checkStmt = $conn->prepare("SELECT id FROM personas WHERE cedula = ?");
-$checkStmt->bind_param("s", $data['cedula']);
-$checkStmt->execute();
-$checkResult = $checkStmt->get_result();
+$checkStmt->execute([$data['cedula']]);
+$checkResult = $checkStmt->fetch();
 
-if ($checkResult->num_rows > 0) {
+if ($checkResult) {
     http_response_code(409);
     echo json_encode(['error' => 'Ya existe una persona con este número de cédula']);
-    $checkStmt->close();
-    $conn->close();
+    $conn = null;
     exit;
 }
-$checkStmt->close();
 
 // Preparar y ejecutar inserción
 $query = "INSERT INTO personas (
@@ -80,8 +80,7 @@ $correo = isset($data['correo']) ? sanitize($data['correo']) : null;
 $casaDestruida = isset($data['casaDestruida']) ? $data['casaDestruida'] : 'no';
 $estado = 'desaparecido';
 
-$stmt->bind_param(
-    "ssssssissssss",
+$stmt->execute([
     $localidad,
     $primerNombre,
     $segundoNombre,
@@ -95,20 +94,14 @@ $stmt->bind_param(
     $correo,
     $casaDestruida,
     $estado
-);
+]);
 
-if ($stmt->execute()) {
-    $id = $conn->insert_id;
-    echo json_encode([
-        'success' => true,
-        'id' => $id,
-        'message' => 'Persona registrada correctamente'
-    ]);
-} else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Error al registrar: ' . $stmt->error]);
-}
+$id = $conn->lastInsertId();
+echo json_encode([
+    'success' => true,
+    'id' => $id,
+    'message' => 'Persona registrada correctamente'
+]);
 
-$stmt->close();
-$conn->close();
+$conn = null;
 ?>
