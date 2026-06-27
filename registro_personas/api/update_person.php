@@ -1,6 +1,9 @@
 <?php
 require_once 'config.php';
 
+// Inicializar la base de datos si es necesario
+initDatabase();
+
 $conn = getConnection();
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -37,46 +40,49 @@ if (!empty($data['telefono']) && !validatePhone($data['telefono'])) {
 // Verificar cédula duplicada (excluyendo el registro actual)
 if (isset($data['cedula'])) {
     $checkStmt = $conn->prepare("SELECT id FROM personas WHERE cedula = ? AND id != ?");
-    $checkStmt->bind_param("si", $data['cedula'], $id);
-    $checkStmt->execute();
-    $checkResult = $checkStmt->get_result();
+    $checkStmt->execute([$data['cedula'], $id]);
+    $checkResult = $checkStmt->fetch();
     
-    if ($checkResult->num_rows > 0) {
+    if ($checkResult) {
         http_response_code(409);
         echo json_encode(['error' => 'Ya existe otra persona con este número de cédula']);
-        $checkStmt->close();
-        $conn->close();
+        $conn = null;
         exit;
     }
-    $checkStmt->close();
 }
 
 // Construir consulta dinámica
 $fields = [];
 $params = [];
-$types = "";
 
 $allowedFields = [
-    'localidad' => 's',
-    'primerNombre' => 's',
-    'segundoNombre' => 's',
-    'primerApellido' => 's',
-    'segundoApellido' => 's',
-    'cedula' => 's',
-    'edad' => 'i',
-    'hospital' => 's',
-    'zonaHospital' => 's',
-    'telefono' => 's',
-    'correo' => 's',
-    'casaDestruida' => 's',
-    'estado' => 's'
+    'localidad',
+    'primerNombre' => 'primer_nombre',
+    'segundoNombre' => 'segundo_nombre',
+    'primerApellido' => 'primer_apellido',
+    'segundoApellido' => 'segundo_apellido',
+    'cedula',
+    'edad',
+    'hospital',
+    'zonaHospital' => 'zona_hospital',
+    'telefono',
+    'correo',
+    'casaDestruida' => 'casa_destruida',
+    'estado'
 ];
 
-foreach ($allowedFields as $field => $type) {
-    if (isset($data[$field])) {
-        $fields[] = strtolower(preg_replace('/([A-Z])/', '_$1', $field)) . " = ?";
-        $params[] = $data[$field];
-        $types .= $type;
+foreach ($allowedFields as $key => $field) {
+    if (is_numeric($key)) {
+        $fieldName = $field;
+        $fieldKey = $field;
+    } else {
+        $fieldName = $field;
+        $fieldKey = $key;
+    }
+    
+    if (isset($data[$fieldKey])) {
+        $fields[] = "$fieldName = ?";
+        $params[] = $data[$fieldKey];
     }
 }
 
@@ -87,22 +93,15 @@ if (empty($fields)) {
 }
 
 $params[] = $id;
-$types .= "i";
 
 $query = "UPDATE personas SET " . implode(", ", $fields) . " WHERE id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param($types, ...$params);
+$stmt->execute($params);
 
-if ($stmt->execute()) {
-    echo json_encode([
-        'success' => true,
-        'message' => 'Persona actualizada correctamente'
-    ]);
-} else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Error al actualizar: ' . $stmt->error]);
-}
+echo json_encode([
+    'success' => true,
+    'message' => 'Persona actualizada correctamente'
+]);
 
-$stmt->close();
-$conn->close();
+$conn = null;
 ?>
