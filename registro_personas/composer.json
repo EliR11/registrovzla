@@ -1,0 +1,9 @@
+{
+    "name": "desaparecidos/app",
+    "description": "Sistema de personas desaparecidas",
+    "type": "project",
+    "require": {
+        "php": "^7.4|^8.0"
+    },
+    "require-dev": {}
+}
