@@ -1,0 +1,18 @@
+# Usar la imagen oficial de PHP con Apache
+FROM php:8.2-apache
+
+# Instalar extensiones necesarias para MySQL
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Habilitar mod_rewrite para URLs limpias
+RUN a2enmod rewrite
+
+# Copiar todos los archivos de la aplicación al servidor
+COPY . /var/www/html/
+
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Configurar el puerto 80 para el tráfico web
+EXPOSE 80
