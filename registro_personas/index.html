@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Sistema de Personas Desaparecidas - Venezuela</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Sistema de Personas Desaparecidas</h1>
+        <p class="subtitle">🇻🇪 Gestión de personas afectadas por el terremoto en Venezuela</p>
+        
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <h3>Total</h3>
+                <div class="number" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Desaparecidos</h3>
+                <div class="number red" id="missingCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Encontrados</h3>
+                <div class="number green" id="foundCount">0</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>📝 Registrar Persona</h2>
+            <form id="personForm" class="form-grid">
+                <div class="form-group">
+                    <label>Localidad</label>
+                    <input type="text" id="localidad" required placeholder="Ej: Caracas, Vargas">
+                </div>
+                <div class="form-group">
+                    <label>Primer Nombre</label>
+                    <input type="text" id="primerNombre" required placeholder="Ej: Juan">
+                </div>
+                <div class="form-group">
+                    <label>Segundo Nombre</label>
+                    <input type="text" id="segundoNombre" placeholder="Ej: Carlos">
+                </div>
+                <div class="form-group">
+                    <label>Primer Apellido</label>
+                    <input type="text" id="primerApellido" required placeholder="Ej: Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Segundo Apellido</label>
+                    <input type="text" id="segundoApellido" placeholder="Ej: Gómez">
+                </div>
+                <div class="form-group">
+                    <label>Nro. Cédula</label>
+                    <input type="text" id="cedula" required placeholder="Ej: 12345678" maxlength="10" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input type="number" id="edad" required placeholder="Ej: 25" min="0" max="120" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label>Hospital</label>
+                    <input type="text" id="hospital" placeholder="Ej: Hospital Universitario">
+                </div>
+                <div class="form-group">
+                    <label>Zona/Ubicación en el Hospital</label>
+                    <input type="text" id="zonaHospital" placeholder="Ej: Pabellón A, Sala 302">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="Ej: +58 412 1234567">
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="correo" placeholder="Ej: email@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label>Casa destruida por terremoto</label>
+                    <select id="casaDestruida">
+                        <option value="no">No</option>
+                        <option value="si">Sí</option>
+                        <option value="averiada">Averiada</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">➕ Registrar Persona</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar por nombre, cédula, localidad...">
+                <div class="btn-group">
+                    <button onclick="filterTable()" class="btn">Buscar</button>
+                    <button onclick="resetFilters()" class="btn btn-danger">Limpiar</button>
+                    <button onclick="loadPersons()" class="btn btn-success">🔄 Actualizar</button>
+                </div>
+            </div>
+            
+            <!-- VISTA DESKTOP - TABLA -->
+            <div class="table-desktop">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Localidad</th>
+                            <th>Nombre Completo</th>
+                            <th>Nro. Cédula</th>
+                            <th>Edad</th>
+                            <th>Hospital</th>
+                            <th>Zona</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Casa</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personTableBody">
+                        <tr>
+                            <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
+                                Cargando datos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- VISTA MÓVIL - TARJETAS -->
+            <div class="table-responsive" id="mobileCardsContainer">
+                <!-- Las tarjetas se renderizan aquí desde JavaScript -->
+                <div style="text-align: center; padding: 40px; color: #999;">
+                    Cargando datos...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal">
+            <h2>✏️ Editar Información</h2>
+            <form id="editForm" class="form-grid">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label>Localidad</label>
+                    <input type="text" id="editLocalidad" required placeholder="Ej: Caracas, Vargas">
+                </div>
+                <div class="form-group">
+                    <label>Primer Nombre</label>
+                    <input type="text" id="editPrimerNombre" required placeholder="Ej: Juan">
+                </div>
+                <div class="form-group">
+                    <label>Segundo Nombre</label>
+                    <input type="text" id="editSegundoNombre" placeholder="Ej: Carlos">
+                </div>
+                <div class="form-group">
+                    <label>Primer Apellido</label>
+                    <input type="text" id="editPrimerApellido" required placeholder="Ej: Pérez">
+                </div>
+                <div class="form-group">
+                    <label>Segundo Apellido</label>
+                    <input type="text" id="editSegundoApellido" placeholder="Ej: Gómez">
+                </div>
+                <div class="form-group">
+                    <label>Nro. Cédula</label>
+                    <input type="text" id="editCedula" required placeholder="Ej: 12345678" maxlength="10" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label>Edad</label>
+                    <input type="number" id="editEdad" required placeholder="Ej: 25" min="0" max="120" inputmode="numeric">
+                </div>
+                <div class="form-group">
+                    <label>Hospital</label>
+                    <input type="text" id="editHospital" placeholder="Ej: Hospital Universitario">
+                </div>
+                <div class="form-group">
+                    <label>Zona/Ubicación en el Hospital</label>
+                    <input type="text" id="editZonaHospital" placeholder="Ej: Pabellón A, Sala 302">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="editTelefono" placeholder="Ej: +58 412 1234567">
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="editCorreo" placeholder="Ej: email@ejemplo.com">
+                </div>
+                <div class="form-group">
+                    <label>Casa destruida por terremoto</label>
+                    <select id="editCasaDestruida">
+                        <option value="no">No</option>
+                        <option value="si">Sí</option>
+                        <option value="averiada">Averiada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="editEstado">
+                        <option value="desaparecido">❌ Desaparecido</option>
+                        <option value="encontrado">✅ Encontrado</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-edit-mode">💾 Guardar Cambios</button>
+                    <button type="button" class="btn btn-danger" onclick="closeEditModal()">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

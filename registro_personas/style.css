@@ -1,0 +1,711 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    padding: 10px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #1a237e;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.8em;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+/* ============================================
+   ESTADÍSTICAS - VERSIÓN MÓVIL MEJORADA
+   ============================================ */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 12px 8px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.stat-card h3 {
+    color: #666;
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-card .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a237e;
+}
+
+.stat-card .number.red {
+    color: #c62828;
+}
+
+.stat-card .number.green {
+    color: #2e7d32;
+}
+
+/* ============================================
+   FORMULARIO - VERSIÓN MÓVIL MEJORADA
+   ============================================ */
+.form-section {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.form-section h2 {
+    font-size: 1.2em;
+    color: #1a237e;
+    margin-bottom: 15px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+    font-size: 0.85em;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+    background: #fafafa;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1a237e;
+    background: white;
+}
+
+/* ============================================
+   BOTONES - VERSIÓN MÓVIL MEJORADA
+   ============================================ */
+.btn {
+    background: #1a237e;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #0d1442;
+}
+
+.btn-danger {
+    background: #c62828;
+}
+
+.btn-danger:hover {
+    background: #8e0000;
+}
+
+.btn-success {
+    background: #2e7d32;
+}
+
+.btn-success:hover {
+    background: #1b5e20;
+}
+
+.btn-edit-mode {
+    background: #1565c0;
+}
+
+.btn-edit-mode:hover {
+    background: #0d47a1;
+}
+
+.btn-small {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+}
+
+.btn-small:hover {
+    opacity: 0.8;
+}
+
+.btn-found {
+    background: #2e7d32;
+    color: white;
+}
+
+.btn-delete {
+    background: #c62828;
+    color: white;
+}
+
+.btn-edit {
+    background: #1565c0;
+    color: white;
+}
+
+/* ============================================
+   TABLA - VERSIÓN MÓVIL (TARJETAS)
+   ============================================ */
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    overflow: hidden;
+}
+
+.search-bar {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.search-bar input {
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    width: 100%;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #1a237e;
+}
+
+.search-bar .btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.search-bar .btn {
+    padding: 10px;
+    font-size: 13px;
+}
+
+/* VISTA TARJETAS PARA MÓVIL */
+.table-responsive {
+    display: none;
+}
+
+/* Vista de tabla para desktop */
+.table-desktop {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.table-desktop thead {
+    background: #1a237e;
+    color: white;
+}
+
+.table-desktop th {
+    padding: 10px 8px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.table-desktop td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.table-desktop tr:hover {
+    background: #f5f5f5;
+}
+
+/* ============================================
+   TARJETAS PARA MÓVIL
+   ============================================ */
+.card-person {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+}
+
+.card-person:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-person .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-person .card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a237e;
+    flex: 1;
+}
+
+.card-person .card-status {
+    font-size: 12px;
+}
+
+.card-person .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 12px;
+    margin-bottom: 10px;
+}
+
+.card-person .card-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+.card-person .card-item .label {
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.card-person .card-item .value {
+    font-weight: 500;
+    color: #333;
+    word-break: break-word;
+}
+
+.card-person .card-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.card-person .card-actions .btn-small {
+    flex: 1;
+    min-width: 60px;
+    text-align: center;
+    padding: 8px 6px;
+    font-size: 11px;
+}
+
+/* Badges en tarjetas */
+.card-person .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.card-person .badge-desaparecido {
+    background: #ffebee;
+    color: #c62828;
+    border: 2px solid #c62828;
+}
+
+.card-person .badge-encontrado {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+}
+
+.card-person .badge-destruida {
+    background: #f44336;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.card-person .badge-averiada {
+    background: #ff9800;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+.card-person .badge-no-averiada {
+    background: #4caf50;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+}
+
+/* ============================================
+   MODAL - VERSIÓN MÓVIL MEJORADA
+   ============================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 95vh;
+    overflow-y: auto;
+    animation: modalIn 0.3s;
+}
+
+@keyframes modalIn {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal h2 {
+    color: #1a237e;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #1a237e;
+    padding-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.modal .form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.modal .form-group input,
+.modal .form-group select {
+    font-size: 15px;
+    padding: 10px 12px;
+}
+
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.modal-actions .btn {
+    padding: 14px;
+    font-size: 15px;
+}
+
+/* ============================================
+   NOTIFICACIONES - VERSIÓN MÓVIL
+   ============================================ */
+.notification {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: #2e7d32;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 3000;
+    animation: slideIn 0.4s;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.notification.error {
+    background: #c62828;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   BADGES Y ESTILOS COMPARTIDOS
+   ============================================ */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 11px;
+    display: inline-block;
+}
+
+.status-desaparecido {
+    background: #ffebee;
+    color: #c62828;
+    border: 2px solid #c62828;
+}
+
+.status-encontrado {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+}
+
+.edad-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.edad-nino {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.edad-adulto {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.edad-anciano {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.zona-hospital {
+    background: #f3e5f5;
+    color: #6a1b9a;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* ============================================
+   RESPONSIVE - PUNTO DE QUIEBRE
+   ============================================ */
+@media (max-width: 768px) {
+    /* Ocultar tabla desktop */
+    .table-desktop {
+        display: none !important;
+    }
+    
+    /* Mostrar vista tarjetas */
+    .table-responsive {
+        display: block !important;
+    }
+    
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .stat-card {
+        padding: 10px 5px;
+    }
+    
+    .stat-card .number {
+        font-size: 20px;
+    }
+    
+    .stat-card h3 {
+        font-size: 10px;
+    }
+    
+    .form-section {
+        padding: 12px;
+    }
+    
+    .search-bar .btn-group {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
+    .search-bar .btn {
+        font-size: 12px;
+        padding: 10px 5px;
+    }
+    
+    .modal {
+        padding: 15px;
+    }
+}
+
+/* ============================================
+   DESKTOP (> 768px) - Mostrar tabla, ocultar tarjetas
+   ============================================ */
+@media (min-width: 769px) {
+    .table-responsive {
+        display: none !important;
+    }
+    
+    .table-desktop {
+        display: table !important;
+    }
+    
+    .form-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .btn {
+        width: auto;
+        grid-column: span 2;
+    }
+    
+    .search-bar {
+        flex-direction: row;
+    }
+    
+    .search-bar .btn-group {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+    }
+    
+    .search-bar .btn {
+        width: auto;
+        padding: 10px 20px;
+    }
+    
+    .modal .form-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .modal-actions {
+        flex-direction: row;
+        grid-column: span 2;
+    }
+    
+    .modal-actions .btn {
+        flex: 1;
+    }
+}
+
+/* ============================================
+   PANTALLAS MUY PEQUEÑAS (< 400px)
+   ============================================ */
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.4em;
+    }
+    
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+    
+    .stat-card {
+        padding: 8px 4px;
+    }
+    
+    .stat-card .number {
+        font-size: 17px;
+    }
+    
+    .stat-card h3 {
+        font-size: 9px;
+    }
+    
+    .card-person .card-body {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    
+    .card-person .card-actions .btn-small {
+        font-size: 10px;
+        padding: 6px 4px;
+        min-width: 50px;
+    }
+    
+    .search-bar .btn-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-bar .btn {
+        font-size: 12px;
+        padding: 10px;
+    }
+}
