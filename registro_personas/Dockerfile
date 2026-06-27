@@ -1,8 +1,15 @@
 # Usar imagen oficial de PHP con Apache
 FROM php:8.2-apache
 
-# Instalar extensiones para SQLite (y opcionalmente para MySQL)
-RUN docker-php-ext-install pdo pdo_sqlite
+# Instalar dependencias del sistema para SQLite
+RUN apt-get update && apt-get install -y \
+    sqlite3 \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar extensiones PHP (primero pdo, luego pdo_sqlite)
+RUN docker-php-ext-install pdo
+RUN docker-php-ext-install pdo_sqlite
 
 # Habilitar mod_rewrite para URLs amigables
 RUN a2enmod rewrite
@@ -18,3 +25,6 @@ RUN touch /var/www/html/database.sqlite \
 
 # Exponer el puerto 80 para el tráfico web
 EXPOSE 80
+
+# Comando para iniciar Apache
+CMD ["apache2-foreground"]
