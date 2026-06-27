@@ -1,5 +1,5 @@
 // API URL - Ruta correcta para tu proyecto  http://localhost/registro_personas/api/
-const API_URL = 'https://elusive-boxing-shrewdly.ngrok-free.dev/registro_personas/api/';
+const API_URL = 'https://rescatevzla2.onrender.com';
 
 let persons = [];
 
