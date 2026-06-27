@@ -1,6 +1,9 @@
 <?php
 require_once 'config.php';
 
+// Inicializar la base de datos si es necesario
+initDatabase();
+
 $conn = getConnection();
 
 // Obtener el término de búsqueda si existe
@@ -30,15 +33,13 @@ $query .= " ORDER BY fecha_registro DESC";
 
 $stmt = $conn->prepare($query);
 if (!empty($params)) {
-    $types = str_repeat('s', count($params));
-    $stmt->bind_param($types, ...$params);
+    $stmt->execute($params);
+} else {
+    $stmt->execute();
 }
 
-$stmt->execute();
-$result = $stmt->get_result();
-
 $persons = [];
-while ($row = $result->fetch_assoc()) {
+while ($row = $stmt->fetch()) {
     $persons[] = [
         'id' => (int)$row['id'],
         'localidad' => $row['localidad'],
@@ -60,6 +61,5 @@ while ($row = $result->fetch_assoc()) {
 
 echo json_encode($persons);
 
-$stmt->close();
-$conn->close();
+$conn = null;
 ?>
