@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: registrovzla
+    runtime: php
+    buildCommand: composer install
+    startCommand: php -S 0.0.0.0:10000 -t .
+    plan: free
+    envVars:
+      - key: DB_HOST
+        value: localhost
+      - key: DB_USER
+        value: root
+      - key: DB_PASS
+        value: 
+      - key: DB_NAME
+        value: desaparecidos_db

@@ -1,8 +1,0 @@
-{
-    "name": "registrovzla/app",
-    "description": "Sistema de personas desaparecidas - Venezuela",
-    "type": "project",
-    "require": {
-        "php": "^7.4|^8.0"
-    }
-}
