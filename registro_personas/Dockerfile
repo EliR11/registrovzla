@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar extensiones PHP (primero pdo, luego pdo_sqlite)
+# Instalar extensiones PHP (pdo y pdo_sqlite)
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_sqlite
 
@@ -17,7 +17,7 @@ RUN a2enmod rewrite
 # Copiar todos los archivos de la aplicación al contenedor
 COPY . /var/www/html/
 
-# Crear la base de datos SQLite y dar permisos de escritura
+# Crear la base de datos SQLite (si no existe) y dar permisos de escritura
 RUN touch /var/www/html/database.sqlite \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
