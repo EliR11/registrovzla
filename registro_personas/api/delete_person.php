@@ -1,6 +1,9 @@
 <?php
 require_once 'config.php';
 
+// Inicializar la base de datos si es necesario
+initDatabase();
+
 $conn = getConnection();
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -14,23 +17,17 @@ if (!$data || !isset($data['id'])) {
 $id = (int)$data['id'];
 
 $stmt = $conn->prepare("DELETE FROM personas WHERE id = ?");
-$stmt->bind_param("i", $id);
+$stmt->execute([$id]);
 
-if ($stmt->execute()) {
-    if ($stmt->affected_rows > 0) {
-        echo json_encode([
-            'success' => true,
-            'message' => 'Persona eliminada correctamente'
-        ]);
-    } else {
-        http_response_code(404);
-        echo json_encode(['error' => 'Persona no encontrada']);
-    }
+if ($stmt->rowCount() > 0) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Persona eliminada correctamente'
+    ]);
 } else {
-    http_response_code(500);
-    echo json_encode(['error' => 'Error al eliminar: ' . $stmt->error]);
+    http_response_code(404);
+    echo json_encode(['error' => 'Persona no encontrada']);
 }
 
-$stmt->close();
-$conn->close();
+$conn = null;
 ?>
